@@ -1,28 +1,30 @@
 package report.word;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import report.domain.JobTestimonal;
 import report.domain.Salary;
 
-import com.fdauto.report.ReportEngine;
 import com.fdauto.report.ReportEngine.ReportType;
 import com.fdauto.report.ReportTemplate;
-import com.fdauto.report.base.DefaultReportTemplate;
 import com.fdauto.report.word.WordContext;
 import com.fdauto.report.word.WordEngine;
+import com.fdauto.report.word.custom.ImageParamHandler;
 import com.fdauto.report.word.impl.AsposeWordContext;
 import com.fdauto.report.word.impl.AsposeWordEngine;
+import com.fdauto.report.word.impl.AsposeWordTemplate;
 
 public class AsposeWordTest {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		normal();
-		
 	}
+	
 	private static void normal() throws FileNotFoundException {
 		//定义模板引擎
 		WordEngine engine = new AsposeWordEngine();
@@ -30,12 +32,18 @@ public class AsposeWordTest {
 		//设置内容
 		WordContext context = new AsposeWordContext();
 		context.put(getParam(), JobTestimonal.class);	//基础对象
-		context.put("pic", "2015-06-08_162726.png");	//图片
+		context.put("pic", "WordConvert.png");			//图片
+		//context.put("pic2", getByte());                 //图片2
+		
 		context.putTableParam("user", getRangeParam(), JobTestimonal.class);//表格
+		//表格嵌套
 		context.putTableParam("salary", getSalarys(), Salary.class);
 		context.putTableParam("user2", getRangeParam(), JobTestimonal.class);
+		//处理图片大小  --模板变量域处理器
+		context.putParamHandler(new ImageParamHandler("pic",100, 50));
+		
 		//定义模板
-		ReportTemplate template = new DefaultReportTemplate("收入证明.doc");
+		ReportTemplate template = new AsposeWordTemplate("收入证明.doc");
 		
 		//整合数据
 		engine.merge(context, template);
@@ -46,6 +54,30 @@ public class AsposeWordTest {
 	}
 	
 	
+	
+	
+	
+	
+	
+	private static byte[] getByte(){
+		
+		try {
+			File image = new File("WordConvert.png");
+			FileInputStream inputStream = new FileInputStream(image);
+			byte[] imageBtye = new byte[inputStream.available()];
+			inputStream.read(imageBtye);
+			inputStream.close();
+			return imageBtye;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+		}
+		return null;
+	}
 	private static ArrayList<Salary> getSalarys(){
 		ArrayList<Salary>  list = new ArrayList<Salary>();
 		

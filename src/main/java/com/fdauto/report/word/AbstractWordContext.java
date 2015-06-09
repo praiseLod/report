@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.aspose.words.IFieldMergingCallback;
 import com.fdauto.report.ReportContext;
 import com.fdauto.report.resovler.ParamResolver;
 import com.fdauto.report.resovler.impl.DefaultParamResolver;
+import com.fdauto.report.word.custom.ParamHandlerChain;
 
 /**
  * <p>基于aspose word实现的模板内容设置类。</p>
@@ -16,7 +18,7 @@ import com.fdauto.report.resovler.impl.DefaultParamResolver;
  * <li>{@code Map<String,Object> Object} 只能为一个8大基本数据类型
  * <li>{@code List<Map<String,Object>>} 为模板中《TableStart:xx》 内容的循环输出提供数据
  * </p>
- * @author praiseLod
+ * @author PraiseLod
  * @date 2015年6月6日
  * @version 
  */
@@ -34,15 +36,21 @@ public abstract class  AbstractWordContext implements WordContext {
 	 * 变量解析器
 	 */
 	protected ParamResolver resolver;
-
+	
+	/**
+	 * 模板变量域处理器，提供自定义的变量域处理。
+	 * <p>项目中提交的处理有：
+	 * <li>com.fdauto.report.word.custom.ImageParamHandler 处理模板中图片的大小 
+	 */
+	protected ParamHandlerChain handlerChain;
 	
 	public AbstractWordContext() {
 		super();
 		this.resolver = new DefaultParamResolver();
 		this.param = new HashMap<String, Object>();
 		this.tableParam = new HashMap<String, List<Map<String,Object>>>();
+		this.handlerChain = new ParamHandlerChain();
 	}
-	
 	
 	/**
 	 * 参数解析
@@ -90,17 +98,28 @@ public abstract class  AbstractWordContext implements WordContext {
 		this.param.putAll(this.resolver.resolve(obj, clazz));
 		return this;
 	}
+	
+	@Override
+	public Map<String, List<Map<String, Object>>> getTableParam() {
+		return this.tableParam;
+	}
+	
+	@Override
+	public IFieldMergingCallback getParamHandler() {
+		return this.handlerChain;
+	}
+
+	@Override
+	public void putParamHandler(IFieldMergingCallback arg0) {
+		this.handlerChain.putHandler(arg0);
+	}
+
 	public ParamResolver getResolver() {
 		return resolver;
 	}
 
 	public void setResolver(ParamResolver resolver) {
 		this.resolver = resolver;
-	}
-
-	@Override
-	public Map<String, List<Map<String, Object>>> getTableParam() {
-		return this.tableParam;
 	}
 	
 }

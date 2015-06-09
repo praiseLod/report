@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.aspose.words.IFieldMergingCallback;
 import com.fdauto.report.ReportContext;
 
 /**
@@ -46,4 +47,17 @@ public interface WordContext extends ReportContext {
 	 * @return Map<String,List<Map<String,Object>>>
 	 */
 	Map<String, List<Map<String, Object>>> getTableParam();
+	
+	/**
+	 * 取得模板变量域处理器
+	 * @return IFieldMergingCallback
+	 */
+	IFieldMergingCallback getParamHandler();
+	
+	
+	/**
+	 * 增设模板变量处理器
+	 * @param arg0 void
+	 */
+	void putParamHandler(IFieldMergingCallback arg0);
 }
