@@ -7,15 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
-
-
-
-
-
-
-
-
-
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +16,12 @@ import org.slf4j.LoggerFactory;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.MailMerge;
-import com.aspose.words.SaveFormat;
 import com.fdauto.report.ReportContext;
-import com.fdauto.report.ReportEngine;
 import com.fdauto.report.ReportTemplate;
 import com.fdauto.report.custom.MapMailMergeDataSource;
 import com.fdauto.report.util.ReportUitl;
 import com.fdauto.report.word.WordContext;
+import com.fdauto.report.word.WordEngine;
 
 
 /**
@@ -39,7 +31,7 @@ import com.fdauto.report.word.WordContext;
  * 
  * 基于apsoe word的word模板工作引擎
  */
-public class AsposeWordEngine implements ReportEngine {
+public class AsposeWordEngine implements WordEngine {
 	
 	private static final Logger log = LoggerFactory.getLogger(AsposeWordEngine.class);
 	
@@ -68,14 +60,15 @@ public class AsposeWordEngine implements ReportEngine {
 			
 			String[] namefiled = context.getNames().toArray(new String[]{});
 			Object[] valuefiled = context.getValues().toArray(new Object[]{});
-			log.debug("基本参数值: "+Arrays.toString(namefiled));
-			log.debug("基本参数名: "+Arrays.toString(valuefiled));
+			log.info("\n模板变量值:{}\n模板变量名:{} ",Arrays.toString(namefiled),Arrays.toString(valuefiled));
 			//基本参数
 			merge.execute(namefiled, valuefiled);
-			//循环参数s
-			if(!wordContext.getRangeParam().isEmpty()){
-				for(String paramName:wordContext.getRangeParam().keySet()){
-					merge.executeWithRegions(new MapMailMergeDataSource(paramName, wordContext.getRangeParam().get(paramName)));
+			//表格参数
+			if(!wordContext.getTableParam().isEmpty()){
+				for(String paramName:wordContext.getTableParam().keySet()){
+					List<Map<String, Object>> tableParam = wordContext.getTableParam().get(paramName);
+					log.info("\n表格变量为 {} ",tableParam);
+					merge.executeWithRegions(new MapMailMergeDataSource(paramName, tableParam));
 				}
 			}
 		} catch (Exception e) {

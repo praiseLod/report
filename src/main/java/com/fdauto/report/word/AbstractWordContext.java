@@ -8,12 +8,12 @@ import java.util.Map;
 
 import com.fdauto.report.ReportContext;
 import com.fdauto.report.resovler.ParamResolver;
-import com.fdauto.report.resovler.impl.BaseParamResolver;
+import com.fdauto.report.resovler.impl.DefaultParamResolver;
 
 /**
  * <p>基于aspose word实现的模板内容设置类。</p>
  * <p>其内容参数的数据结构只允许有两种，
- * <li>{@code Map<String,Object> Object} 只能为一个8大基本数据类型，{@code byte[]} 可为模板提交图片
+ * <li>{@code Map<String,Object> Object} 只能为一个8大基本数据类型
  * <li>{@code List<Map<String,Object>>} 为模板中《TableStart:xx》 内容的循环输出提供数据
  * </p>
  * @author praiseLod
@@ -22,25 +22,25 @@ import com.fdauto.report.resovler.impl.BaseParamResolver;
  */
 public abstract class  AbstractWordContext implements WordContext {
 	/**
-	 * 基础输出参数
+	 * 模板变量
 	 */
 	protected Map<String, Object> param;
 	/**
-	 * 循环输出参数
+	 * 表格变量
 	 */
-	protected Map<String, List<Map<String, Object>>> rangeParam;
+	protected Map<String, List<Map<String, Object>>> tableParam;
 	
 	/**
-	 * 对象解析器
+	 * 变量解析器
 	 */
 	protected ParamResolver resolver;
 
 	
 	public AbstractWordContext() {
 		super();
-		this.resolver = new BaseParamResolver();
+		this.resolver = new DefaultParamResolver();
 		this.param = new HashMap<String, Object>();
-		this.rangeParam = new HashMap<String, List<Map<String,Object>>>();
+		this.tableParam = new HashMap<String, List<Map<String,Object>>>();
 	}
 	
 	
@@ -49,7 +49,7 @@ public abstract class  AbstractWordContext implements WordContext {
 	 * 将对象模型解析成{@code Map<String,Object>} ,模板只接受java基本类型值
 	 * @return Map<String,Object>
 	 */
-	protected abstract  Map<String, Object> resoveParam();
+	protected abstract  Map<String, Object> resoveParam(Object obj,Class<?> clazz);
 	
 	@Override
 	public ReportContext put(String name, Object value) {
@@ -68,14 +68,20 @@ public abstract class  AbstractWordContext implements WordContext {
 	}
 
 	@Override
-	public WordContext putRangeParam(String name,List<Map<String, Object>> rangeParam) {
-		this.rangeParam.put(name, rangeParam);
+	public WordContext putTableParam(String name,List<Map<String, Object>> tableParam) {
+		this.tableParam.put(name, tableParam);
 		return this;
 	}
 
 	@Override
-	public WordContext putRangeParam(String name,Collection<?> rangeParam, Class<?> clazz) {
-		this.rangeParam.put(name,this.resolver.resolve(rangeParam, clazz));
+	public WordContext putTableParam(String name,Collection<?> tableParam, Class<?> clazz) {
+		if(tableParam == null) return this;
+		
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		for(Object o : tableParam){
+			resultList.add(resoveParam(o, clazz));
+		}
+		this.tableParam.put(name,resultList);
 		return this;
 	}
 
@@ -93,10 +99,8 @@ public abstract class  AbstractWordContext implements WordContext {
 	}
 
 	@Override
-	public Map<String, List<Map<String, Object>>> getRangeParam() {
-		return this.rangeParam;
+	public Map<String, List<Map<String, Object>>> getTableParam() {
+		return this.tableParam;
 	}
-	
-	
 	
 }

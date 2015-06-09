@@ -13,6 +13,7 @@ import com.fdauto.report.ReportEngine.ReportType;
 import com.fdauto.report.ReportTemplate;
 import com.fdauto.report.base.DefaultReportTemplate;
 import com.fdauto.report.word.WordContext;
+import com.fdauto.report.word.WordEngine;
 import com.fdauto.report.word.impl.AsposeWordContext;
 import com.fdauto.report.word.impl.AsposeWordEngine;
 
@@ -24,15 +25,15 @@ public class AsposeWordTest {
 	}
 	private static void normal() throws FileNotFoundException {
 		//定义模板引擎
-		ReportEngine engine = new AsposeWordEngine();
+		WordEngine engine = new AsposeWordEngine();
 		
 		//设置内容
 		WordContext context = new AsposeWordContext();
 		context.put(getParam(), JobTestimonal.class);	//基础对象
 		context.put("pic", "2015-06-08_162726.png");	//图片
-		context.putRangeParam("user", getRangeParam(), JobTestimonal.class);//表格
-		context.putRangeParam("salary", getSalarys(), Salary.class);
-		context.putRangeParam("user2", getRangeParam(), JobTestimonal.class);
+		context.putTableParam("user", getRangeParam(), JobTestimonal.class);//表格
+		context.putTableParam("salary", getSalarys(), Salary.class);
+		context.putTableParam("user2", getRangeParam(), JobTestimonal.class);
 		//定义模板
 		ReportTemplate template = new DefaultReportTemplate("收入证明.doc");
 		

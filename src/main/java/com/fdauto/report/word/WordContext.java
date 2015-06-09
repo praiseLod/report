@@ -15,8 +15,8 @@ import com.fdauto.report.ReportContext;
  */
 public interface WordContext extends ReportContext {
 	/**
-	 * 填充基本内容参数。
-	 * <p>提供该对象的类型。解析器将根据该对象类型最终将生成{@code Map<String,Object>}类型
+	 * 为模板变量设值
+	 * <p>提供的值为模型对象。解析器将根据该对象类型最终将生成{@code Map<String,Object>}类型
 	 * @param obj	指定模型对象
 	 * @param clazz 指定模型对象的类型
 	 * @return AbstractWordContext
@@ -24,26 +24,26 @@ public interface WordContext extends ReportContext {
 	WordContext put(Object obj, Class<?> clazz);
 	
 	/**
-	 * 填充循环内容参数。
-	 * @param name          循环参数名
-	 * @param rangeParam	参数值
+	 * 为表格变量设值
+	 * @param name          表格变量名
+	 * @param rangeParam	变量值
 	 * @return AbstractWordContext
 	 */
-	WordContext putRangeParam(String name,List<Map<String, Object>> rangeParam);
+	WordContext putTableParam(String name,List<Map<String, Object>> rangeParam);
 	
 	/**
-	 * 填充循环内容参数。如果模板中有多个同名的循环参数名，则只能匹配第一个表
+	 * 为表格变量设值。如果模板中有多个同名的表格变量，则只能匹配第一张表
 	 * <p>{@code rangeParam}为一个对象模型的集合。并将根据提交的{@code clazz}解析该对象模型最终将生成{@code List<Map<String,Object>>}类型
 	 * @param rangeParam	参数值（对象模型的集合）
 	 * @param clazz			对象模型的类型
-	 * @param name          循环参数名
+	 * @param name          表格变量名
 	 * @return AbstractWordContext
 	 */
-	WordContext putRangeParam(String name,Collection<?> rangeParam,Class<?> clazz);;
+	WordContext putTableParam(String name,Collection<?> rangeParam,Class<?> clazz);;
 	 
 	/**
-	 *	获取循环参数
+	 *	获取表格变量
 	 * @return Map<String,List<Map<String,Object>>>
 	 */
-	Map<String, List<Map<String, Object>>> getRangeParam();
+	Map<String, List<Map<String, Object>>> getTableParam();
 }

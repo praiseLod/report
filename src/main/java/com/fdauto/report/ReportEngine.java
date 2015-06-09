@@ -15,8 +15,6 @@ public interface ReportEngine {
 	
 	void save(OutputStream outputStream);
 	
-	void save(OutputStream outputStream,ReportType type);
-	
 	public enum ReportType{
 		DOC(10),
 		DOCX(20),

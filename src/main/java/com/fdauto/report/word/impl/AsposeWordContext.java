@@ -7,11 +7,8 @@ import com.fdauto.report.word.AbstractWordContext;
 public class AsposeWordContext extends AbstractWordContext {
 
 	@Override
-	protected Map<String, Object> resoveParam() {
-		// TODO Auto-generated method stub
-		return null;
+	protected Map<String, Object> resoveParam(Object obj,Class<?> clazz) {
+		return this.resolver.resolve(obj, clazz);
 	}
-
 	
-
 }

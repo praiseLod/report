@@ -2,6 +2,11 @@ package com.fdauto.report.exception;
 
 public class ReportException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8215705983676842925L;
+
 	public ReportException() {
 		super();
 		// TODO Auto-generated constructor stub
