@@ -6,10 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import report.domain.JobTestimonal;
 import report.domain.Salary;
 
+import com.aspose.words.Document;
 import com.fdauto.report.ReportEngine.ReportType;
 import com.fdauto.report.ReportTemplate;
 import com.fdauto.report.word.WordContext;
@@ -22,8 +24,20 @@ import com.fdauto.report.word.impl.AsposeWordTemplate;
 public class AsposeWordTest {
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		normal();
+		//normal();
+		//insertDocument();
 	}
+	
+	
+	//文档内嵌测试
+	private static void insertDocument() throws FileNotFoundException{
+		WordEngine engine = new AsposeWordEngine();
+		engine.setTeplate(new AsposeWordTemplate("收入证明.doc"));
+		Document nestDoc = new AsposeWordTemplate("nestDoc.doc").createDocument();
+		engine.insertDocument("adsfe", nestDoc);
+		engine.save(new FileOutputStream("e://nest.doc"), ReportType.DOC);
+	}
+	
 	
 	private static void normal() throws FileNotFoundException {
 		//定义模板引擎
@@ -52,11 +66,6 @@ public class AsposeWordTest {
 		engine.save(new FileOutputStream("e://1.doc"),ReportType.DOC);
 		
 	}
-	
-	
-	
-	
-	
 	
 	
 	private static byte[] getByte(){

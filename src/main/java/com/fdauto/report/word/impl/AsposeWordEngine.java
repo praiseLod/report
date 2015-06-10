@@ -13,11 +13,21 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aspose.words.Bookmark;
+import com.aspose.words.CompositeNode;
 import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ImportFormatMode;
 import com.aspose.words.License;
 import com.aspose.words.MailMerge;
+import com.aspose.words.Node;
+import com.aspose.words.NodeImporter;
+import com.aspose.words.NodeType;
+import com.aspose.words.Paragraph;
+import com.aspose.words.Section;
 import com.fdauto.report.ReportContext;
 import com.fdauto.report.ReportTemplate;
+import com.fdauto.report.exception.ReportException;
 import com.fdauto.report.util.ReportUitl;
 import com.fdauto.report.word.WordContext;
 import com.fdauto.report.word.WordEngine;
@@ -35,9 +45,11 @@ public class AsposeWordEngine implements WordEngine {
 	private static final Logger log = LoggerFactory
 			.getLogger(AsposeWordEngine.class);
 
-	private Document document; //asposeWord 文档对象
-	private String license;    //asposeWord 使用证书
-
+	private Document document;          //asposeWord 文档对象
+	private String license;             //asposeWord 使用证书
+	private ReportTemplate template;    //模板类
+	private WordContext context;        //内容类
+	
 	public AsposeWordEngine() {
 		this(null);
 	}
@@ -48,31 +60,26 @@ public class AsposeWordEngine implements WordEngine {
 	}
 
 	@Override
-	public void merge(ReportContext context, ReportTemplate template) {
+	public Document merge(ReportContext context, ReportTemplate template) {
+		this.context = (WordContext) context;
+		this.template = template;
+		
 		try {
-			if (!(context instanceof WordContext)) {
-				if (context == null) {
-					this.document = (Document) template.createDocument();
-					return;
-				}
-
-				throw new InvalidParameterException(
-						"WordEngine模板引擎的ReportContext只能是 WordContext 类型");
-			}
-			WordContext wordContext = (WordContext) context;
-
 			this.document = (Document) template.createDocument();
+			
+			if(this.context==null)return this.document;
+			
+			WordContext wordContext = (WordContext) context;
+			//添加模板变量处理器
 			this.document.getMailMerge().setFieldMergingCallback(wordContext.getParamHandler());
 			
 			MailMerge merge = document.getMailMerge();
-
 			String[] namefiled = context.getNames().toArray(new String[] {});
 			Object[] valuefiled = context.getValues().toArray(new Object[] {});
 			log.info("\n模板变量值:{}\n模板变量名:{} ", Arrays.toString(namefiled),
 					Arrays.toString(valuefiled));
 			
-			// 基本参数
-			merge.execute(namefiled, valuefiled);
+			merge.execute(namefiled, valuefiled);// 基本参数
 			// 表格参数
 			if (!wordContext.getTableParam().isEmpty()) {
 				for (String paramName : wordContext.getTableParam().keySet()) {
@@ -83,10 +90,9 @@ public class AsposeWordEngine implements WordEngine {
 							paramName, tableParam));
 				}
 			}
-			
+			return this.document;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ReportException(e);
 		}
 	}
 
@@ -104,8 +110,7 @@ public class AsposeWordEngine implements WordEngine {
 		try {
 			document.save(outputStream, type.getValue());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ReportException(e);
 		}
 	}
 
@@ -144,9 +149,85 @@ public class AsposeWordEngine implements WordEngine {
 	}
 
 	@Override
-	public void InsertDocument(String bookmarkName, Document document) {
-		// TODO Auto-generated method stub
+	public void insertDocument(String bookmarkName, Document nestDoc) {
+		if(nestDoc==null) return;
+		if(this.document==null) this.document = createDocument();
 		
+		try {
+			Bookmark bookmark = this.document.getRange().getBookmarks().get(bookmarkName);
+			if(bookmark == null){
+				log.warn("{}未嵌入模板中，因为在模板中未找到名为{}书签，请再确认操作",nestDoc.getOriginalFileName(),bookmarkName);
+				return;
+			}
+			bookmark.setText("");	//将标签内容置空
+			
+			DocumentBuilder builder = new DocumentBuilder(this.document);
+			builder.moveToBookmark(bookmarkName); //移至标签处
+			insertDocument(bookmark.getBookmarkStart().getParentNode(),nestDoc);
+		} catch (Exception e) {
+			throw new ReportException(e);
+		}
+	}
+	
+	@Override
+	public Document createDocument() {
+		return merge(this.context, this.template);
+	}
+	
+	//文档合并实现
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void insertDocument(Node insertAfterNode, Document srcDoc) throws Exception
+	{
+	    // 确保节点是一个段落或是表格
+	    if ((insertAfterNode.getNodeType() != NodeType.PARAGRAPH) &
+	      (insertAfterNode.getNodeType() != NodeType.TABLE))
+	        throw new IllegalArgumentException("The destination node should be either a paragraph or table.");
+
+	    // 将插入以目标段落的父容器中
+	    CompositeNode dstStory = insertAfterNode.getParentNode();
+
+	    // 为导入对象添加风格
+	    NodeImporter importer = new NodeImporter(srcDoc, insertAfterNode.getDocument(), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+
+	    // 遍历源文档中的所有部分。
+	    for (Section srcSection : srcDoc.getSections())
+	    {
+	        //遍历所有的块级别节点(段落和表)的主体部分。
+	        for (Node srcNode : ((Iterable<Node>) srcSection.getBody()))
+	        {
+	            // 跳过节点如果是最后一个空段部分。
+	            if (srcNode.getNodeType() == (NodeType.PARAGRAPH))
+	            {
+	                Paragraph para = (Paragraph)srcNode;
+	                if (para.isEndOfSection() && !para.hasChildNodes())
+	                    continue;
+	            }
+
+	            // 这将创建一个克隆节点的,插入到目标文档。
+	            Node newNode = importer.importNode(srcNode, true);
+
+	            // 在引用的节点后插入新了节点
+	            dstStory.insertAfter(newNode, insertAfterNode);
+	            insertAfterNode = newNode;
+	        }
+	    }
+	}
+
+	public ReportTemplate getTemplate() {
+		return template;
+	}
+
+	public void setTeplate(ReportTemplate template){
+		this.template = template;
+	}
+
+	public WordContext getContext() {
+		return context;
+	}
+
+	@Override
+	public void setContext(ReportContext context) {
+		this.context = (WordContext) context;
 	}
 
 }

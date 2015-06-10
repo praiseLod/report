@@ -69,7 +69,7 @@ public class AsposeWordTemplate implements ReportTemplate {
 		try {
 			if(getReportPath()==null||getReportPath().trim().isEmpty()){
 				if(getReprotSource()==null)
-					throw new ReportException("未指定一个文档模板");
+					throw new ReportException("未指定模板路径，或模板源");
 				document = new Document(getReprotSource());
 			}else{
 				document = new Document(getReportPath());

@@ -19,10 +19,12 @@ public interface WordEngine extends ReportEngine {
 	void save(OutputStream outputStream, ReportType type);
 	
 	/**
-	 * 向当前文档的指定的位置上插入一个文档
+	 * 向当前文档的指定的书签位置插入一个文档。
+	 * <p>在插入之前，如果当前引擎未生成文档，将先根据给定的模板对象生成文档后进行插入操作。
+	 * 如果书签没有找到也将不进行<br>插入操作
 	 * 
 	 * @param bookmarkName   模板书签名
-	 * @param document       被插入的对象 
+	 * @param document       被插入的对象。如果该对象为{@code null}将不进行插入操作
 	 */
-	void InsertDocument(String bookmarkName,Document document);
+	void insertDocument(String bookmarkName,Document nestDoc);
 }
