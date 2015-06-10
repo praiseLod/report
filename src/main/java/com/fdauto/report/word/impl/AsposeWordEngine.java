@@ -186,14 +186,17 @@ public class AsposeWordEngine implements WordEngine {
 		return merge(this.context, this.template);
 	}
 	
+	@Override
 	public ReportTemplate getTemplate() {
 		return template;
 	}
 
-	public void setTeplate(ReportTemplate template){
+	@Override
+	public void setTemplate(ReportTemplate template){
 		this.template = template;
 	}
 
+	@Override
 	public WordContext getContext() {
 		return context;
 	}

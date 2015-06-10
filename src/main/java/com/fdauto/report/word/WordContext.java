@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.aspose.words.IFieldMergingCallback;
 import com.fdauto.report.ReportContext;
+import com.fdauto.report.resovler.ParamResolver;
 
 /**
  * 基于aspose word 的 wordContxt模板内容类
@@ -60,4 +61,10 @@ public interface WordContext extends ReportContext {
 	 * @param arg0 void
 	 */
 	void putMailMergeHandler(IFieldMergingCallback arg0);
+	
+	/**
+	 * 设置参数解析器
+	 * @param resolver void
+	 */
+	void setParamResolver(ParamResolver resolver);
 }

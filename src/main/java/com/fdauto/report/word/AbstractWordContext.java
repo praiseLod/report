@@ -120,7 +120,8 @@ public abstract class  AbstractWordContext implements WordContext {
 		return resolver;
 	}
 
-	public void setResolver(ParamResolver resolver) {
+	@Override
+	public void setParamResolver(ParamResolver resolver) {
 		this.resolver = resolver;
 	}
 	

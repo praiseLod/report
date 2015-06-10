@@ -3,10 +3,43 @@ package com.fdauto.report.word;
 import java.io.OutputStream;
 
 import com.aspose.words.Document;
+import com.fdauto.report.ReportContext;
 import com.fdauto.report.ReportEngine;
+import com.fdauto.report.ReportTemplate;
 
 public interface WordEngine extends ReportEngine {
 
+	/**
+	 * 获取模板内容
+	 * @return ReportContext
+	 */
+	WordContext getContext();
+	
+	/**
+	 * 获取模板
+	 * @return ReportTemplate
+	 */
+	ReportTemplate getTemplate();
+	
+	/**
+	 * 获取文档
+	 * @return Object
+	 */
+	Document getDocument();
+	
+	/**
+	 * 引擎生成文档
+	 * void
+	 */
+	Document createDocument();
+	
+	/**
+	 * 设置模板引擎的{@code ReportContext}和{@code ReportTemplate}属性并生成文档
+	 * @param context		
+	 * @param template 
+	 */
+	Document merge(ReportContext context,ReportTemplate template);
+	
 	/**
 	 * 根据提供的文档类型输出文档,调用此操作前如果引擎未生成文档将自动根据提供的模板与内容生成文档。
 	 * <p>aspose可输出的文档类型为：<pre>doc , docx , pdf , txt , xml , mhtml , html , xhtml 
@@ -26,7 +59,5 @@ public interface WordEngine extends ReportEngine {
 	 * @param document       被插入的对象。如果该对象为{@code null}将不进行插入操作
 	 */
 	void insertDocument(String bookmarkName,Document nestDoc);
-	
-	
 	
 }

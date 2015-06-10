@@ -9,20 +9,6 @@ import java.io.OutputStream;
  *
  */
 public interface ReportEngine {
-	
-	/**
-	 * 引擎生成文档
-	 * void
-	 */
-	Object createDocument();
-	
-	/**
-	 * 设置模板引擎的{@code ReportContext}和{@code ReportTemplate}属性并生成文档
-	 * @param context		
-	 * @param template 
-	 */
-	Object merge(ReportContext context,ReportTemplate template);
-	
 	/**
 	 * 输出文档.
 	 * @param outputStream void
@@ -33,13 +19,17 @@ public interface ReportEngine {
 	 * 设置引擎模板
 	 * @param template void
 	 */
-	void setTeplate(ReportTemplate template);
+	void setTemplate(ReportTemplate template);
+	
+	
 	
 	/**
 	 * 调引擎内容
 	 * @param context void
 	 */
 	void setContext(ReportContext context);
+	
+	
 	/**
 	 * 文档类型
 	 * 
