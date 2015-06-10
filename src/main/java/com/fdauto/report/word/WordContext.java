@@ -49,15 +49,15 @@ public interface WordContext extends ReportContext {
 	Map<String, List<Map<String, Object>>> getTableParam();
 	
 	/**
-	 * 取得模板变量域处理器
+	 * 取得合并时模板变量域处理器
 	 * @return IFieldMergingCallback
 	 */
-	IFieldMergingCallback getParamHandler();
+	IFieldMergingCallback getMailMergeHandler();
 	
 	
 	/**
-	 * 增设模板变量处理器
+	 * 增设合并时模板变量域处理器
 	 * @param arg0 void
 	 */
-	void putParamHandler(IFieldMergingCallback arg0);
+	void putMailMergeHandler(IFieldMergingCallback arg0);
 }

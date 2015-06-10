@@ -10,7 +10,7 @@ import com.aspose.words.IFieldMergingCallback;
 import com.fdauto.report.ReportContext;
 import com.fdauto.report.resovler.ParamResolver;
 import com.fdauto.report.resovler.impl.DefaultParamResolver;
-import com.fdauto.report.word.custom.ParamHandlerChain;
+import com.fdauto.report.word.custom.mergehandler.MailMergeHandleChain;
 
 /**
  * <p>基于aspose word实现的模板内容设置类。</p>
@@ -33,23 +33,25 @@ public abstract class  AbstractWordContext implements WordContext {
 	protected Map<String, List<Map<String, Object>>> tableParam;
 	
 	/**
-	 * 变量解析器
+	 * 模板变量域处理器
 	 */
 	protected ParamResolver resolver;
 	
 	/**
-	 * 模板变量域处理器，提供自定义的变量域处理。
+	 * 合并时模板变量域处理器，提供自定义的变量域处理。
 	 * <p>项目中提交的处理有：
 	 * <li>com.fdauto.report.word.custom.ImageParamHandler 处理模板中图片的大小 
+	 * <li>com.fdauto.report.word.custom.mergehandler.InsertDocumentAtMailMergeBlobHandler
+	 * 实现以邮件合并的方式合并文档
 	 */
-	protected ParamHandlerChain handlerChain;
+	protected MailMergeHandleChain handlerChain;
 	
 	public AbstractWordContext() {
 		super();
 		this.resolver = new DefaultParamResolver();
 		this.param = new HashMap<String, Object>();
 		this.tableParam = new HashMap<String, List<Map<String,Object>>>();
-		this.handlerChain = new ParamHandlerChain();
+		this.handlerChain = new MailMergeHandleChain();
 	}
 	
 	/**
@@ -105,12 +107,12 @@ public abstract class  AbstractWordContext implements WordContext {
 	}
 	
 	@Override
-	public IFieldMergingCallback getParamHandler() {
+	public IFieldMergingCallback getMailMergeHandler() {
 		return this.handlerChain;
 	}
 
 	@Override
-	public void putParamHandler(IFieldMergingCallback arg0) {
+	public void putMailMergeHandler(IFieldMergingCallback arg0) {
 		this.handlerChain.putHandler(arg0);
 	}
 

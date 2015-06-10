@@ -32,6 +32,7 @@ import com.fdauto.report.util.ReportUitl;
 import com.fdauto.report.word.WordContext;
 import com.fdauto.report.word.WordEngine;
 import com.fdauto.report.word.custom.MapMailMergeDataSource;
+import com.fdauto.report.word.util.AsposeWordUitl;
 
 /**
  *  基于apsoeWord模板工作引擎
@@ -84,8 +85,8 @@ public class AsposeWordEngine implements WordEngine {
 			if(this.context==null)return this.document;
 			
 			WordContext wordContext = (WordContext) context;
-			//添加模板变量处理器
-			this.document.getMailMerge().setFieldMergingCallback(wordContext.getParamHandler());
+			//添加合并时模板变量域处理器
+			this.document.getMailMerge().setFieldMergingCallback(wordContext.getMailMergeHandler());
 			
 			MailMerge merge = document.getMailMerge();
 			String[] namefiled = context.getNames().toArray(new String[] {});
@@ -142,7 +143,6 @@ public class AsposeWordEngine implements WordEngine {
 		}
 	}
 
-	
 	public String getLicense() {
 		return this.license;
 	}
@@ -171,11 +171,11 @@ public class AsposeWordEngine implements WordEngine {
 				log.warn("{}未嵌入模板中，因为在模板中未找到名为{}书签，请再确认操作",nestDoc.getOriginalFileName(),bookmarkName);
 				return;
 			}
-			bookmark.setText("");	//将标签内容置空
 			
+			bookmark.setText("");	//将标签内容置空
 			DocumentBuilder builder = new DocumentBuilder(this.document);
 			builder.moveToBookmark(bookmarkName); //移至标签处
-			insertDocument(bookmark.getBookmarkStart().getParentNode(),nestDoc);
+			AsposeWordUitl.insertDocument(bookmark.getBookmarkStart().getParentNode(),nestDoc);
 		} catch (Exception e) {
 			throw new ReportException(e);
 		}
@@ -186,45 +186,6 @@ public class AsposeWordEngine implements WordEngine {
 		return merge(this.context, this.template);
 	}
 	
-	//文档合并实现
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void insertDocument(Node insertAfterNode, Document srcDoc) throws Exception
-	{
-	    // 确保节点是一个段落或是表格
-	    if ((insertAfterNode.getNodeType() != NodeType.PARAGRAPH) &
-	      (insertAfterNode.getNodeType() != NodeType.TABLE))
-	        throw new IllegalArgumentException("The destination node should be either a paragraph or table.");
-
-	    // 将插入以目标段落的父容器中
-	    CompositeNode dstStory = insertAfterNode.getParentNode();
-
-	    // 为导入对象添加风格
-	    NodeImporter importer = new NodeImporter(srcDoc, insertAfterNode.getDocument(), ImportFormatMode.KEEP_SOURCE_FORMATTING);
-
-	    // 遍历源文档中的所有部分。
-	    for (Section srcSection : srcDoc.getSections())
-	    {
-	        //遍历所有的块级别节点(段落和表)的主体部分。
-	        for (Node srcNode : ((Iterable<Node>) srcSection.getBody()))
-	        {
-	            // 跳过节点如果是最后一个空段部分。
-	            if (srcNode.getNodeType() == (NodeType.PARAGRAPH))
-	            {
-	                Paragraph para = (Paragraph)srcNode;
-	                if (para.isEndOfSection() && !para.hasChildNodes())
-	                    continue;
-	            }
-
-	            // 这将创建一个克隆节点的,插入到目标文档。
-	            Node newNode = importer.importNode(srcNode, true);
-
-	            // 在引用的节点后插入新了节点
-	            dstStory.insertAfter(newNode, insertAfterNode);
-	            insertAfterNode = newNode;
-	        }
-	    }
-	}
-
 	public ReportTemplate getTemplate() {
 		return template;
 	}
