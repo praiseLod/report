@@ -42,21 +42,35 @@ import com.fdauto.report.word.custom.MapMailMergeDataSource;
  */
 public class AsposeWordEngine implements WordEngine {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(AsposeWordEngine.class);
+	private static final Logger log = LoggerFactory.getLogger(AsposeWordEngine.class);
 
+	private String license;  //asposeWord 使用证书
 	private Document document;          //asposeWord 文档对象
-	private String license;             //asposeWord 使用证书
 	private ReportTemplate template;    //模板类
 	private WordContext context;        //内容类
 	
+	/**
+	 * 初始证书路径
+	 * @param license
+	 */
 	public AsposeWordEngine() {
-		this(null);
+		this("aspose_license.xml");
 	}
-
+	
 	public AsposeWordEngine(String license) {
 		super();
-		showLicense(ReportUitl.getClassPathResource("aspose_license.xml")); // 展示证书，可使用aspose所有功能
+		this.license = license;
+		showLicense(ReportUitl.getClassPathResource(this.license)); // 展示证书，可使用aspose所有功能
+	}
+	
+	public AsposeWordEngine(ReportTemplate template) {
+		this();
+		this.template = template;
+	}
+
+	public AsposeWordEngine(Document document) {
+		this();
+		this.document = document;
 	}
 
 	@Override
@@ -98,15 +112,13 @@ public class AsposeWordEngine implements WordEngine {
 
 	//默认生成的模式为.doc
 	@Override
-	public void save(OutputStream outputStream) {
-		save(outputStream, ReportType.DOC);
+	public void saveTo(OutputStream outputStream) {
+		saveTo(outputStream, ReportType.DOC);
 	}
 
 	@Override
-	public void save(OutputStream outputStream, ReportType type) {
-		if (this.document == null) {
-			throw new IllegalStateException("wordEngine Document is null");
-		}
+	public void saveTo(OutputStream outputStream, ReportType type) {
+		if (this.document == null) this.document = createDocument();
 		try {
 			document.save(outputStream, type.getValue());
 		} catch (Exception e) {

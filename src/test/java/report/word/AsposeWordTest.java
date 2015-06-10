@@ -35,7 +35,7 @@ public class AsposeWordTest {
 		engine.setTeplate(new AsposeWordTemplate("收入证明.doc"));
 		Document nestDoc = new AsposeWordTemplate("nestDoc.doc").createDocument();
 		engine.insertDocument("adsfe", nestDoc);
-		engine.save(new FileOutputStream("e://nest.doc"), ReportType.DOC);
+		engine.saveTo(new FileOutputStream("e://nest.doc"), ReportType.DOC);
 	}
 	
 	
@@ -63,7 +63,7 @@ public class AsposeWordTest {
 		engine.merge(context, template);
 		
 		//输出
-		engine.save(new FileOutputStream("e://1.doc"),ReportType.DOC);
+		engine.saveTo(new FileOutputStream("e://1.doc"),ReportType.DOC);
 		
 	}
 	

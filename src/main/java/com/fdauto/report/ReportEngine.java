@@ -24,10 +24,10 @@ public interface ReportEngine {
 	Object merge(ReportContext context,ReportTemplate template);
 	
 	/**
-	 * 输出文档，调用此操作前要先让引擎生成文档才能完成文档的输出。
+	 * 输出文档.
 	 * @param outputStream void
 	 */
-	void save(OutputStream outputStream);
+	void saveTo(OutputStream outputStream);
 	
 	/**
 	 * 设置引擎模板
