@@ -1,11 +1,10 @@
-package com.fdauto.report.word.impl;
+package com.fdauto.report.word.aspose.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,25 +13,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aspose.words.Bookmark;
-import com.aspose.words.CompositeNode;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
-import com.aspose.words.ImportFormatMode;
 import com.aspose.words.License;
 import com.aspose.words.MailMerge;
-import com.aspose.words.Node;
-import com.aspose.words.NodeImporter;
-import com.aspose.words.NodeType;
-import com.aspose.words.Paragraph;
-import com.aspose.words.Section;
-import com.fdauto.report.ReportContext;
-import com.fdauto.report.ReportTemplate;
+import com.fdauto.report.core.type.ReportType;
 import com.fdauto.report.exception.ReportException;
 import com.fdauto.report.util.ReportUitl;
-import com.fdauto.report.word.WordContext;
-import com.fdauto.report.word.WordEngine;
-import com.fdauto.report.word.custom.MapMailMergeDataSource;
-import com.fdauto.report.word.util.AsposeWordUitl;
+import com.fdauto.report.word.aspose.WordContext;
+import com.fdauto.report.word.aspose.WordEngine;
+import com.fdauto.report.word.aspose.WordTemplate;
+import com.fdauto.report.word.aspose.custom.MapMailMergeDataSource;
+import com.fdauto.report.word.aspose.util.AsposeWordUitl;
 
 /**
  *  基于apsoeWord模板工作引擎
@@ -47,7 +39,7 @@ public class AsposeWordEngine implements WordEngine {
 
 	private String license;  //asposeWord 使用证书
 	private Document document;          //asposeWord 文档对象
-	private ReportTemplate template;    //模板类
+	private WordTemplate template;    //模板类
 	private WordContext context;        //内容类
 	
 	/**
@@ -64,7 +56,7 @@ public class AsposeWordEngine implements WordEngine {
 		showLicense(ReportUitl.getClassPathResource(this.license)); // 展示证书，可使用aspose所有功能
 	}
 	
-	public AsposeWordEngine(ReportTemplate template) {
+	public AsposeWordEngine(WordTemplate template) {
 		this();
 		this.template = template;
 	}
@@ -75,8 +67,8 @@ public class AsposeWordEngine implements WordEngine {
 	}
 
 	@Override
-	public Document merge(ReportContext context, ReportTemplate template) {
-		this.context = (WordContext) context;
+	public Document merge(WordContext context, WordTemplate template) {
+		this.context = context;
 		this.template = template;
 		
 		try {
@@ -130,7 +122,7 @@ public class AsposeWordEngine implements WordEngine {
 	
 	/**
 	 * asposeWord注册
-	 * @param is void
+	 * @param is
 	 */
 	private void showLicense(InputStream is) {
 		try {
@@ -187,12 +179,12 @@ public class AsposeWordEngine implements WordEngine {
 	}
 	
 	@Override
-	public ReportTemplate getTemplate() {
+	public WordTemplate getTemplate() {
 		return template;
 	}
 
 	@Override
-	public void setTemplate(ReportTemplate template){
+	public void setTemplate(WordTemplate template){
 		this.template = template;
 	}
 
@@ -202,8 +194,8 @@ public class AsposeWordEngine implements WordEngine {
 	}
 
 	@Override
-	public void setContext(ReportContext context) {
-		this.context = (WordContext) context;
+	public void setContext(WordContext context) {
+		this.context =  context;
 	}
 
 }

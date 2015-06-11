@@ -1,11 +1,10 @@
-package com.fdauto.report.word;
+package com.fdauto.report.word.aspose;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import com.aspose.words.IFieldMergingCallback;
-import com.fdauto.report.ReportContext;
 import com.fdauto.report.resovler.ParamResolver;
 
 /**
@@ -15,7 +14,20 @@ import com.fdauto.report.resovler.ParamResolver;
  * @date 2015年6月8日
  * @version 
  */
-public interface WordContext extends ReportContext {
+public interface WordContext  {
+	/**
+	 * 为模板的参数提交数据
+	 * 
+	 * @param name 	参数名
+	 * @param value	参数值
+	 * @return 当前对象，便于级联操作
+	 */
+	WordContext put(String name,Object value);
+	
+	
+	List<String> getNames();
+	
+	List<Object> getValues();
 	/**
 	 * 为模板变量设值
 	 * <p>提供的值为模型对象。解析器将根据该对象类型最终将生成{@code Map<String,Object>}类型

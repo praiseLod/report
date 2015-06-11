@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fdauto.report.ReportEngine.ReportType;
 
 public class regex {
 	

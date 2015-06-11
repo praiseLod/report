@@ -1,4 +1,4 @@
-package com.fdauto.report.word;
+package com.fdauto.report.word.aspose;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.aspose.words.IFieldMergingCallback;
-import com.fdauto.report.ReportContext;
 import com.fdauto.report.resovler.ParamResolver;
 import com.fdauto.report.resovler.impl.DefaultParamResolver;
-import com.fdauto.report.word.custom.mergehandler.MailMergeHandleChain;
+import com.fdauto.report.word.aspose.mergehandler.MailMergeHandleChain;
 
 /**
  * <p>基于aspose word实现的模板内容设置类。</p>
@@ -62,7 +61,7 @@ public abstract class  AbstractWordContext implements WordContext {
 	protected abstract  Map<String, Object> resoveParam(Object obj,Class<?> clazz);
 	
 	@Override
-	public ReportContext put(String name, Object value) {
+	public WordContext put(String name, Object value) {
 		this.param.put(name, value);
 		return this;
 	}

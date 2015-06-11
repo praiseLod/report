@@ -1,4 +1,4 @@
-package com.fdauto.report.word.custom.mergehandler;
+package com.fdauto.report.word.aspose.mergehandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

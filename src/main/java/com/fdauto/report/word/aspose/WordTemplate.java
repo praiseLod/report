@@ -1,16 +1,8 @@
-package com.fdauto.report;
+package com.fdauto.report.word.aspose;
 
 import java.io.InputStream;
 
-/**
- * 报表模板
- * 
- * @author PraiseLod
- * @date 2015年6月9日
- * @version 
- */
-public interface ReportTemplate {
-
+public interface WordTemplate {
 	/**
 	 * 返回模板所在的路径
 	 * @return String

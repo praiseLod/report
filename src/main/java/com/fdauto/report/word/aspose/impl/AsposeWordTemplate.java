@@ -1,10 +1,10 @@
-package com.fdauto.report.word.impl;
+package com.fdauto.report.word.aspose.impl;
 
 import java.io.InputStream;
 
 import com.aspose.words.Document;
-import com.fdauto.report.ReportTemplate;
 import com.fdauto.report.exception.ReportException;
+import com.fdauto.report.word.aspose.WordTemplate;
 
 /**
  * aspose文档模板
@@ -14,7 +14,7 @@ import com.fdauto.report.exception.ReportException;
  * @date 2015年6月9日
  * @version 
  */
-public class AsposeWordTemplate implements ReportTemplate {
+public class AsposeWordTemplate implements WordTemplate {
 
 	private String templatePath;        //模板路径
 	private InputStream inputStream;	//模板来源

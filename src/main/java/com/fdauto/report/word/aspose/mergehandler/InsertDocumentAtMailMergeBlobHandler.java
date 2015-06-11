@@ -1,4 +1,4 @@
-package com.fdauto.report.word.custom.mergehandler;
+package com.fdauto.report.word.aspose.mergehandler;
 
 import java.util.regex.Pattern;
 
@@ -7,7 +7,7 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.FieldMergingArgs;
 import com.aspose.words.IFieldMergingCallback;
 import com.aspose.words.ImageFieldMergingArgs;
-import com.fdauto.report.word.util.AsposeWordUitl;
+import com.fdauto.report.word.aspose.util.AsposeWordUitl;
 
 /**
  * 实现以邮件合并的方式合并文档

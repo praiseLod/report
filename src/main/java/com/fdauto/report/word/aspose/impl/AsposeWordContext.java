@@ -1,8 +1,8 @@
-package com.fdauto.report.word.impl;
+package com.fdauto.report.word.aspose.impl;
 
 import java.util.Map;
 
-import com.fdauto.report.word.AbstractWordContext;
+import com.fdauto.report.word.aspose.AbstractWordContext;
 
 public class AsposeWordContext extends AbstractWordContext {
 
