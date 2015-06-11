@@ -7,7 +7,7 @@ package com.fdauto.report.factory;
  * @date 2015年6月11日
  * @version 
  */
-public interface ReportFactory {
+public interface IReportFactory {
 	/**
 	 *	根据类取得各类型的工厂
 	 * @param clazz

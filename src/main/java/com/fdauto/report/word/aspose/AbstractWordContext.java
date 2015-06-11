@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.aspose.words.IFieldMergingCallback;
-import com.fdauto.report.resovler.ParamResolver;
-import com.fdauto.report.resovler.impl.DefaultParamResolver;
 import com.fdauto.report.word.aspose.mergehandler.MailMergeHandleChain;
+import com.fdauto.report.word.aspose.resolver.ParamResolver;
+import com.fdauto.report.word.aspose.resolver.impl.DefaultParamResolver;
 
 /**
  * <p>基于aspose word实现的模板内容设置类。</p>
@@ -60,6 +60,9 @@ public abstract class  AbstractWordContext implements WordContext {
 	 */
 	protected abstract  Map<String, Object> resoveParam(Object obj,Class<?> clazz);
 	
+	/* 
+	 * 
+	 */
 	@Override
 	public WordContext put(String name, Object value) {
 		this.param.put(name, value);

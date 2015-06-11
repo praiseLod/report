@@ -1,4 +1,4 @@
-package com.fdauto.report.resovler;
+package com.fdauto.report.word.aspose.resolver;
 
 import java.util.Map;
 

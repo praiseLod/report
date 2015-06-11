@@ -3,50 +3,10 @@ package com.fdauto.report.word.aspose;
 import java.io.OutputStream;
 
 import com.aspose.words.Document;
+import com.fdauto.report.ReportEngine;
 import com.fdauto.report.core.type.ReportType;
 
-public interface WordEngine {
-	
-	/**
-	 * 输出文档.
-	 * @param outputStream void
-	 */
-	void saveTo(OutputStream outputStream);
-	
-	/**
-	 * 设置引擎模板
-	 * @param template void
-	 */
-	void setTemplate(WordTemplate template);
-	
-	
-	
-	/**
-	 * 调引擎内容
-	 * @param context void
-	 */
-	void setContext(WordContext context);
-	
-	
-	/**
-	 * 文档类型
-	 * 
-	 * @author PraiseLod
-	 * @date 2015年6月9日
-	 * @version 
-	 */
-
-	/**
-	 * 获取模板内容
-	 * @return ReportContext
-	 */
-	WordContext getContext();
-	
-	/**
-	 * 获取模板
-	 * @return ReportTemplate
-	 */
-	WordTemplate getTemplate();
+public interface WordEngine extends ReportEngine<WordTemplate, WordContext> {
 	
 	/**
 	 * 获取文档
@@ -63,7 +23,14 @@ public interface WordEngine {
 	/**
 	 * 设置模板引擎的{@code ReportContext}和{@code ReportTemplate}属性并生成文档
 	 * @param context		
-	 * @param template 
+	 */
+	Document merge(WordContext context);
+	
+	/**
+	 *设置模板引擎的{@code ReportContext}和{@code ReportTemplate}属性并生成文档
+	 * @param context
+	 * @param template
+	 * @return Document
 	 */
 	Document merge(WordContext context,WordTemplate template);
 	

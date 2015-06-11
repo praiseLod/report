@@ -1,7 +1,5 @@
 package com.fdauto.report.word.aspose.mergehandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.FieldMergingArgs;
@@ -17,8 +15,7 @@ import com.aspose.words.Shape;
  * @version
  */
 public class ImageMailMergeHandler implements IFieldMergingCallback {
-	private static final Logger log = LoggerFactory
-			.getLogger(ImageMailMergeHandler.class);
+	//private static final Logger log = LoggerFactory.getLogger(ImageMailMergeHandler.class);
 	
 	private double top;       // 图片的头部坐标位置
 	private double left;      // 图片左部坐标位置

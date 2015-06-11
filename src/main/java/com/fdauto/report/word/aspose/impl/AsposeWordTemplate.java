@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import com.aspose.words.Document;
 import com.fdauto.report.exception.ReportException;
+import com.fdauto.report.impl.AbstractTemplate;
 import com.fdauto.report.word.aspose.WordTemplate;
 
 /**
@@ -14,51 +15,22 @@ import com.fdauto.report.word.aspose.WordTemplate;
  * @date 2015年6月9日
  * @version 
  */
-public class AsposeWordTemplate implements WordTemplate {
-
-	private String templatePath;        //模板路径
-	private InputStream inputStream;	//模板来源
+public class AsposeWordTemplate extends AbstractTemplate implements WordTemplate {
 	
 	public AsposeWordTemplate() {
-		this("");
+		super();
 	}
 
 	public AsposeWordTemplate(String templatePath) {
 		super();
-		this.templatePath = templatePath;
 	}
 
 	public AsposeWordTemplate(InputStream inputStream) {
 		super();
-		this.inputStream = inputStream;
-	}
-
-	@Override
-	public void setSource(InputStream inputStream) {
-		
-	}
-
-	@Override
-	public String getReportPath() {
-		return this.templatePath;
-	}
-
-	@Override
-	public void setSource(String path) {
-		this.templatePath = path;
-	}
-
-	@Override
-	public InputStream getReprotSource() {
-		return this.inputStream;
 	}
 
 	/**
 	 * 创建一个aspose文档对象。
-	 * <P>创建文档时加载模板资源的顺序为：
-	 * <li>ReportTemplate.getReportPath()
-	 * <li>ReportTemplate.getReprotSource()
-	 * </p>
 	 * 
 	 * @param template
 	 * @return Document
@@ -67,13 +39,7 @@ public class AsposeWordTemplate implements WordTemplate {
 	public Document createDocument() {
 		Document document = null;
 		try {
-			if(getReportPath()==null||getReportPath().trim().isEmpty()){
-				if(getReprotSource()==null)
-					throw new ReportException("未指定模板路径，或模板源");
-				document = new Document(getReprotSource());
-			}else{
-				document = new Document(getReportPath());
-			}
+			document = new Document(getReprotSource());
 		} catch (Exception e) {
 			throw new ReportException("文档对象创建失败",e);
 		}

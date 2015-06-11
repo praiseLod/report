@@ -1,7 +1,11 @@
 package com.fdauto.report.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * @author praiseLod
@@ -27,12 +31,36 @@ public class ReportUitl {
 	
 	
 	/**
-	 * 在类路径下取得指定的文件
+	 * 在类路径下取得指定的文件，并以二进制流返回
 	 * @param fileName
 	 * @return
 	 */
 	public static InputStream getClassPathResource(String fileName){
 		return Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+	}
+	
+	/**
+	 * 从文件路径下取得文件，以二进行流返回
+	 * @param fileName
+	 * @return
+	 * @throws IOException InputStream
+	 */
+	public static InputStream getFileResource(String fileName) throws IOException{
+		FileInputStream stream = FileUtils.openInputStream(new File(fileName));
+		return stream;
+	}
+	
+	/**
+	 * 先从类路径下查找文件，如果没找到就从文件路径下查找
+	 * @param fileName
+	 * @return
+	 * @throws IOException InputStream
+	 */
+	public static InputStream fileOrClassPathResource(String fileName) throws IOException{
+		InputStream stream = getClassPathResource(fileName);
+		if(stream==null)
+			stream = getFileResource(fileName);
+		return stream;
 	}
 	
 	

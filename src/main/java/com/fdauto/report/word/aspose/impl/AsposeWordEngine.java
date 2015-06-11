@@ -39,9 +39,8 @@ public class AsposeWordEngine implements WordEngine {
 
 	private String license;  //asposeWord 使用证书
 	private Document document;          //asposeWord 文档对象
-	private WordTemplate template;    //模板类
 	private WordContext context;        //内容类
-	
+	private WordTemplate template;      //模板变量
 	/**
 	 * 初始证书路径
 	 * @param license
@@ -56,27 +55,20 @@ public class AsposeWordEngine implements WordEngine {
 		showLicense(ReportUitl.getClassPathResource(this.license)); // 展示证书，可使用aspose所有功能
 	}
 	
-	public AsposeWordEngine(WordTemplate template) {
-		this();
-		this.template = template;
-	}
-
 	public AsposeWordEngine(Document document) {
 		this();
 		this.document = document;
 	}
 
 	@Override
-	public Document merge(WordContext context, WordTemplate template) {
+	public Document merge(WordContext context) {
 		this.context = context;
-		this.template = template;
-		
 		try {
-			this.document = (Document) template.createDocument();
+			this.document = template.createDocument();
 			
 			if(this.context==null)return this.document;
 			
-			WordContext wordContext = (WordContext) context;
+			WordContext wordContext = context;
 			//添加合并时模板变量域处理器
 			this.document.getMailMerge().setFieldMergingCallback(wordContext.getMailMergeHandler());
 			
@@ -85,14 +77,15 @@ public class AsposeWordEngine implements WordEngine {
 			Object[] valuefiled = context.getValues().toArray(new Object[] {});
 			log.info("\n模板变量值:{}\n模板变量名:{} ", Arrays.toString(namefiled),
 					Arrays.toString(valuefiled));
+			// 设置基本参数
+			merge.execute(namefiled, valuefiled);
 			
-			merge.execute(namefiled, valuefiled);// 基本参数
-			// 表格参数
 			if (!wordContext.getTableParam().isEmpty()) {
 				for (String paramName : wordContext.getTableParam().keySet()) {
 					List<Map<String, Object>> tableParam = wordContext
 							.getTableParam().get(paramName);
 					log.info("\n表格变量为 {} ", tableParam);
+					// 设置表格参数
 					merge.executeWithRegions(new MapMailMergeDataSource(
 							paramName, tableParam));
 				}
@@ -118,7 +111,6 @@ public class AsposeWordEngine implements WordEngine {
 			throw new ReportException(e);
 		}
 	}
-
 	
 	/**
 	 * asposeWord注册
@@ -177,25 +169,32 @@ public class AsposeWordEngine implements WordEngine {
 	public Document createDocument() {
 		return merge(this.context, this.template);
 	}
-	
-	@Override
-	public WordTemplate getTemplate() {
-		return template;
-	}
-
-	@Override
-	public void setTemplate(WordTemplate template){
-		this.template = template;
-	}
-
-	@Override
-	public WordContext getContext() {
-		return context;
-	}
 
 	@Override
 	public void setContext(WordContext context) {
 		this.context =  context;
+	}
+
+	@Override
+	public WordTemplate setTemplate(String path) {
+		if(this.template==null)
+			this.template = new AsposeWordTemplate();
+		this.template.setSource(path);
+		return this.template;
+	}
+
+	@Override
+	public WordTemplate setTemplate(InputStream stream) {
+		if(this.template==null)
+			this.template = new AsposeWordTemplate();
+		this.template.setSource(stream);
+		return this.template;
+	}
+
+	@Override
+	public Document merge(WordContext context, WordTemplate template) {
+		this.template= template;
+		return merge(context);
 	}
 
 }

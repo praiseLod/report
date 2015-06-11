@@ -5,13 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import report.domain.JobTestimonal;
-import report.domain.Salary;
 
 import com.aspose.words.Document;
 import com.fdauto.report.core.type.ReportType;
 import com.fdauto.report.word.aspose.WordContext;
 import com.fdauto.report.word.aspose.WordEngine;
-import com.fdauto.report.word.aspose.WordTemplate;
 import com.fdauto.report.word.aspose.impl.AsposeWordContext;
 import com.fdauto.report.word.aspose.impl.AsposeWordEngine;
 import com.fdauto.report.word.aspose.impl.AsposeWordTemplate;
@@ -50,10 +48,9 @@ public class AsposeWordTest {
 		context.putMailMergeHandler(new InsertDocumentAtMailMergeBlobHandler());
 		
 		//定义模板
-		WordTemplate template = new AsposeWordTemplate("template/收入证明.doc");
-		
+		engine.setTemplate("template/收入证明.doc");
 		//整合数据
-		engine.merge(context, template);
+		engine.merge(context);
 		
 		//输出
 		FileOutputStream stream = new FileOutputStream("e://1.doc");
@@ -64,7 +61,7 @@ public class AsposeWordTest {
 	//利用引擎进行文档合并测试
 		private static void insertDocument() throws FileNotFoundException{
 			WordEngine engine = new AsposeWordEngine();
-			engine.setTemplate(new AsposeWordTemplate("template/收入证明.doc"));
+			engine.setTemplate("template/收入证明.doc");
 			Document nestDoc = new AsposeWordTemplate("template/nestDoc.doc").createDocument();
 			engine.insertDocument("otherDoc", nestDoc);
 			engine.saveTo(new FileOutputStream("e://nest.doc"), ReportType.DOC);

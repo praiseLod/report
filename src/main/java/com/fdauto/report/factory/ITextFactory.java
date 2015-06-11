@@ -1,5 +1,8 @@
 package com.fdauto.report.factory;
 
+import com.fdauto.report.text.TextEngine;
+
+
 /**
  * 文本模板工厂
  * 
@@ -7,6 +10,6 @@ package com.fdauto.report.factory;
  * @date 2015年6月11日
  * @version 
  */
-public interface TextFactory {
-	
+public interface ITextFactory {
+	TextEngine getEngine();
 }
