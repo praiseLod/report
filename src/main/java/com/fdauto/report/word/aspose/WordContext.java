@@ -17,13 +17,23 @@ import com.fdauto.report.word.aspose.resolver.ParamResolver;
  */
 public interface WordContext extends ReportContext  {
 	
+	/**
+	 * 返回所有非表格变量名，模板中变量名表示为《paramName》
+	 * @return List<String>
+	 */
 	List<String> getNames();
 	
+	/**
+	 * 返回所有非表格变量的变量值
+	 * @return List<Object>
+	 */
 	List<Object> getValues();
 	
 	/**
 	 * 为模板变量设值
-	 * <p>提供的值为模型对象。解析器将根据该对象类型最终将生成{@code Map<String,Object>}类型
+	 * <p>提供的值为模型对象。解析器将根据该对象类型最终将生成{@code Map<String,Object>}类型，默认情况下是将<br>
+	 * 对象的所有属性进行转换，你可以为该类指定一个{@code com.fdauto.report.word.aspose.resolver.ParamResolver}<br>
+	 * 解析器，自定义转换的类型
 	 * @param obj	指定模型对象
 	 * @param clazz 指定模型对象的类型
 	 * @return AbstractWordContext
@@ -40,7 +50,8 @@ public interface WordContext extends ReportContext  {
 	
 	/**
 	 * 为表格变量设值。如果模板中有多个同名的表格变量，则只能匹配第一张表
-	 * <p>{@code rangeParam}为一个对象模型的集合。并将根据提交的{@code clazz}解析该对象模型最终将生成{@code List<Map<String,Object>>}类型
+	 * <p>{@code rangeParam}为一个对象模型的集合。并将根据提交的{@code clazz}解析该对象模型最终将生成{@code List<Map<String,Object>>}类型。
+	 * 默认情况下是将对象的所有属性进行转换，你可以为该类指定一个{@code com.fdauto.report.word.aspose.resolver.ParamResolver}<br>
 	 * @param rangeParam	参数值（对象模型的集合）
 	 * @param clazz			对象模型的类型
 	 * @param name          表格变量名

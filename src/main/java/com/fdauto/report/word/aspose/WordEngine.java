@@ -6,6 +6,13 @@ import com.aspose.words.Document;
 import com.fdauto.report.ReportEngine;
 import com.fdauto.report.core.type.ReportType;
 
+/**
+ * 基于aspose word的实现的word工作引擎
+ * 
+ * @author PraiseLod
+ * @date 2015年6月12日
+ * @version 
+ */
 public interface WordEngine extends ReportEngine<WordTemplate, WordContext> {
 	
 	/**

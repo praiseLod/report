@@ -9,7 +9,7 @@ import com.fdauto.report.text.TextEngine;
 import com.fdauto.report.text.impl.VelocityTextEngine;
 
 /**
- * 模板的快捷工具
+ * 文本快捷工具
  * 
  * @author PraiseLod
  * @date 2015年6月11日

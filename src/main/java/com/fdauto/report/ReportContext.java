@@ -2,7 +2,7 @@ package com.fdauto.report;
 
 
 /**
- * 
+ * 模板内容统一接口
  * 
  * @author PraiseLod
  * @date 2015年6月11日

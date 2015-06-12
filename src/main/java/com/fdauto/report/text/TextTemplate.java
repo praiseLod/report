@@ -9,5 +9,9 @@ public interface TextTemplate extends ReportTemplate {
 	 * @param path void
 	 */
 	void setSource(String path,CharSet charSet);
+	/**
+	 * 设置字符类型
+	 * @return CharSet
+	 */
 	CharSet getEncoding();
 }

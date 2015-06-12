@@ -8,7 +8,7 @@ import com.fdauto.report.exception.ReportException;
 import com.fdauto.report.util.ReportUitl;
 
 /**
- * 
+ * 统一模板抽象类
  * 
  * @author PraiseLod
  * @date 2015年6月11日

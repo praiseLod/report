@@ -3,7 +3,7 @@ package com.fdauto.report;
 import java.io.InputStream;
 
 /**
- * 
+ * 总的报表模板接口
  * 
  * @author PraiseLod
  * @date 2015年6月11日

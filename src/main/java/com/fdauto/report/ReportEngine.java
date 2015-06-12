@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * 
- * 
+ * 总的报表引擎。
+ * @{code T}为引擎需要处理的接口类型，{@code C}为引擎需要处理的模板类型
  * @author PraiseLod
  * @date 2015年6月11日
  * @version 
@@ -31,7 +31,7 @@ public interface ReportEngine<T,C> {
 	T setTemplate(InputStream stream);
 	
 	/**
-	 * 输出文档.
+	 * 输出文档
 	 * @param outputStream void
 	 */
 	void saveTo(OutputStream stream);
