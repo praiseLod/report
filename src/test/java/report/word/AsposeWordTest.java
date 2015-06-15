@@ -54,7 +54,7 @@ public class AsposeWordTest {
 		
 		//输出
 		FileOutputStream stream = new FileOutputStream("e://1.doc");
-		engine.saveTo(stream,ReportType.DOC);
+		engine.save(stream,ReportType.DOC);
 		
 	}
 	
@@ -64,7 +64,7 @@ public class AsposeWordTest {
 			engine.setTemplate("template/收入证明.doc");
 			Document nestDoc = new AsposeWordTemplate("template/nestDoc.doc").createDocument();
 			engine.insertDocument("otherDoc", nestDoc);
-			engine.saveTo(new FileOutputStream("e://nest.doc"), ReportType.DOC);
+			engine.save(new FileOutputStream("e://nest.doc"), ReportType.DOC);
 		}
 	
 	

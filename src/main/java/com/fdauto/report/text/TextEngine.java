@@ -43,5 +43,5 @@ public interface TextEngine extends ReportEngine<TextTemplate, VelocityContext> 
 	 * 将最后生成的文档转换为二进行流
 	 * @return InputStream
 	 */
-	InputStream ConvertTo();
+	InputStream saveTo();
 }

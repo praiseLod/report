@@ -14,7 +14,7 @@ import com.fdauto.report.util.ReportUitl;
  * @date 2015年6月11日
  * @version 
  */
-public class AbstractTemplate implements ReportTemplate {
+public abstract class AbstractTemplate implements ReportTemplate {
 	
 	protected String templatePath;
 	protected InputStream templateStream;
@@ -63,4 +63,15 @@ public class AbstractTemplate implements ReportTemplate {
 		return this.templateStream;
 	}
 
+	@Override
+	public void closeResource() {
+		if(this.templateStream!=null)
+			try {
+				this.templateStream.close();
+			} catch (IOException e) {
+			}
+		this.templateStream=null;
+	}
+	
+	
 }

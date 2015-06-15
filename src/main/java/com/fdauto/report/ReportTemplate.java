@@ -32,4 +32,10 @@ public interface ReportTemplate {
 	 * @return InputStream
 	 */
 	InputStream getReprotSource();
+	
+	/**
+	 * 关闭资源
+	 * void
+	 */
+	void closeResource();
 }

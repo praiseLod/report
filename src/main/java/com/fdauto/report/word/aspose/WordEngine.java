@@ -49,7 +49,7 @@ public interface WordEngine extends ReportEngine<WordTemplate, WordContext> {
 	 * @param outputStream   
 	 * @param type           生成的类型
 	 */
-	void saveTo(OutputStream outputStream, ReportType type);
+	void save(OutputStream outputStream, ReportType type);
 	
 	/**
 	 * 向当前文档的指定的书签位置插入一个文档。
@@ -60,5 +60,11 @@ public interface WordEngine extends ReportEngine<WordTemplate, WordContext> {
 	 * @param document       被插入的对象。如果该对象为{@code null}将不进行插入操作
 	 */
 	void insertDocument(String bookmarkName,Document nestDoc);
+	
+	/**
+	 *	设置word模板
+	 * @param template void
+	 */
+	void setTemplate(WordTemplate template);
 	
 }

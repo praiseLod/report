@@ -37,7 +37,7 @@ public class AsposeWordEngine implements WordEngine {
 
 	private static final Logger log = LoggerFactory.getLogger(AsposeWordEngine.class);
 
-	private String license;  //asposeWord 使用证书
+	private String license; 			//asposeWord 使用证书
 	private Document document;          //asposeWord 文档对象
 	private WordContext context;        //内容类
 	private WordTemplate template;      //模板变量
@@ -52,7 +52,11 @@ public class AsposeWordEngine implements WordEngine {
 	public AsposeWordEngine(String license) {
 		super();
 		this.license = license;
-		showLicense(ReportUitl.getClassPathResource(this.license)); // 展示证书，可使用aspose所有功能
+		try {
+			showLicense(ReportUitl.getClassPathResource(this.license));// 展示证书，可使用aspose所有功能
+		} catch (FileNotFoundException e) {
+			throw new ReportException(e);
+		} 
 	}
 	
 	public AsposeWordEngine(Document document) {
@@ -98,17 +102,18 @@ public class AsposeWordEngine implements WordEngine {
 
 	//默认生成的模式为.doc
 	@Override
-	public void saveTo(OutputStream outputStream) {
-		saveTo(outputStream, ReportType.DOC);
+	public void save(OutputStream outputStream) {
+		save(outputStream, ReportType.DOC);
 	}
 
 	@Override
-	public void saveTo(OutputStream outputStream, ReportType type) {
+	public void save(OutputStream outputStream, ReportType type) {
 		if (this.document == null) this.document = createDocument();
 		try {
 			document.save(outputStream, type.getValue());
 		} catch (Exception e) {
 			throw new ReportException(e);
+		}finally{
 		}
 	}
 	
@@ -197,4 +202,10 @@ public class AsposeWordEngine implements WordEngine {
 		return merge(context);
 	}
 
+	@Override
+	public void setTemplate(WordTemplate template) {
+		this.template = template;
+	}
+	
+	
 }

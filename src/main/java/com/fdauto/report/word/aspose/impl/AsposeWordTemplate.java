@@ -1,5 +1,6 @@
 package com.fdauto.report.word.aspose.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.aspose.words.Document;
@@ -22,11 +23,11 @@ public class AsposeWordTemplate extends AbstractTemplate implements WordTemplate
 	}
 
 	public AsposeWordTemplate(String templatePath) {
-		super();
+		super(templatePath);
 	}
 
 	public AsposeWordTemplate(InputStream inputStream) {
-		super();
+		super(inputStream);
 	}
 
 	/**
@@ -42,6 +43,13 @@ public class AsposeWordTemplate extends AbstractTemplate implements WordTemplate
 			document = new Document(getReprotSource());
 		} catch (Exception e) {
 			throw new ReportException("文档对象创建失败",e);
+		}finally{
+			if(this.templateStream==null)
+				try {
+					this.templateStream.close();
+				} catch (IOException e) {
+				}
+			this.templateStream=null;
 		}
 		return document;
 	}

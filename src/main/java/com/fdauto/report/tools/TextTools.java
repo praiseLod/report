@@ -35,13 +35,13 @@ public class TextTools {
 	public static InputStream saveTo(String path,VelocityContext context){
 		engine.setTemplate(path);
 		engine.setContext(context);
-		return engine.ConvertTo();
+		return engine.saveTo();
 	}
 	
 	public static void save(OutputStream stream,String path,VelocityContext context){
 		engine.setTemplate(path);
 		engine.setContext(context);
-		engine.saveTo(stream);
+		engine.save(stream);
 	}
 	public static String merge(InputStream stream,VelocityContext context){
 		engine.setTemplate(stream);

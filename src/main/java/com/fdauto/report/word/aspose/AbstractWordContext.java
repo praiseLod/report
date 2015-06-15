@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.aspose.words.IFieldMergingCallback;
+import com.fdauto.report.word.aspose.mergehandler.InsertDocumentAtMailMergeBlobHandler;
 import com.fdauto.report.word.aspose.mergehandler.MailMergeHandleChain;
 import com.fdauto.report.word.aspose.resolver.ParamResolver;
 import com.fdauto.report.word.aspose.resolver.impl.DefaultParamResolver;
@@ -50,7 +51,19 @@ public abstract class  AbstractWordContext implements WordContext {
 		this.resolver = new DefaultParamResolver();
 		this.param = new HashMap<String, Object>();
 		this.tableParam = new HashMap<String, List<Map<String,Object>>>();
+		initMailMergeHandleChain();
+		
+	}
+	
+	
+	/**
+	 * 设置默认的合并域处理链
+	 * void
+	 */
+	private void initMailMergeHandleChain(){
 		this.handlerChain = new MailMergeHandleChain();
+		//文档合并处理
+		handlerChain.putHandler(new InsertDocumentAtMailMergeBlobHandler());
 	}
 	
 	/**
@@ -60,9 +73,10 @@ public abstract class  AbstractWordContext implements WordContext {
 	 */
 	protected abstract  Map<String, Object> resoveParam(Object obj,Class<?> clazz);
 	
-	/* 
-	 * 
-	 */
+	public ParamResolver getResolver() {
+		return resolver;
+	}
+
 	@Override
 	public WordContext put(String name, Object value) {
 		this.param.put(name, value);
@@ -116,10 +130,6 @@ public abstract class  AbstractWordContext implements WordContext {
 	@Override
 	public void putMailMergeHandler(IFieldMergingCallback arg0) {
 		this.handlerChain.putHandler(arg0);
-	}
-
-	public ParamResolver getResolver() {
-		return resolver;
 	}
 
 	@Override

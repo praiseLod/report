@@ -15,7 +15,7 @@ import com.fdauto.report.text.TextTemplate;
  */
 public class VelocityTemplate extends AbstractTemplate implements TextTemplate {
 
-	private CharSet charSet;
+	private CharSet charSet = CharSet.UTF8;	//文本编码默认为utf-8
 
 	public VelocityTemplate() {
 		super();
@@ -33,13 +33,11 @@ public class VelocityTemplate extends AbstractTemplate implements TextTemplate {
 	public void setSource(String path, CharSet charSet) {
 		this.templatePath =path;
 		this.charSet = charSet;
-		
 	}
 
 	@Override
 	public CharSet getEncoding() {
 		return this.charSet;
 	}
-
 
 }

@@ -34,7 +34,7 @@ public interface ReportEngine<T,C> {
 	 * 输出文档
 	 * @param outputStream void
 	 */
-	void saveTo(OutputStream stream);
+	void save(OutputStream stream);
 	
 	
 }
