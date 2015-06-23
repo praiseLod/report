@@ -65,7 +65,6 @@ public class VelocityTextEngine implements TextEngine {
 			throw new ReportException(e);
 		}finally{
 			this.template.closeResource();
-			this.template =null;
 			closeResource(null, stream);
 		}
 	}
@@ -132,7 +131,6 @@ public class VelocityTextEngine implements TextEngine {
 			throw new ReportException(e);
 		} finally{
 			this.template.closeResource();
-			this.template =null;
 			if(out!=null)
 				try {
 					out.close();
@@ -165,6 +163,12 @@ public class VelocityTextEngine implements TextEngine {
 	public InputStream saveTo() {
 		String content = merge();
 		return new ByteArrayInputStream(content.getBytes());
+	}
+
+	@Override
+	public void clear() {
+		this.context = null;
+		this.template = null;
 	}
 	
 }

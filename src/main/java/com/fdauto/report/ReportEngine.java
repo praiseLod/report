@@ -36,5 +36,10 @@ public interface ReportEngine<T,C> {
 	 */
 	void save(OutputStream stream);
 	
+	/**
+	 * 清除模板与内容设置
+	 * void
+	 */
+	void clear();
 	
 }

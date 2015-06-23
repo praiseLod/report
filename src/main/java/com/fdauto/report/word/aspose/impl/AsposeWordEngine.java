@@ -19,6 +19,7 @@ import com.aspose.words.License;
 import com.aspose.words.MailMerge;
 import com.fdauto.report.core.type.ReportType;
 import com.fdauto.report.exception.ReportException;
+import com.fdauto.report.util.AsposeUtil;
 import com.fdauto.report.util.ReportUitl;
 import com.fdauto.report.word.aspose.WordContext;
 import com.fdauto.report.word.aspose.WordEngine;
@@ -46,17 +47,7 @@ public class AsposeWordEngine implements WordEngine {
 	 * @param license
 	 */
 	public AsposeWordEngine() {
-		this("aspose_license.xml");
-	}
-	
-	public AsposeWordEngine(String license) {
-		super();
-		this.license = license;
-		try {
-			showLicense(ReportUitl.getClassPathResource(this.license));// 展示证书，可使用aspose所有功能
-		} catch (FileNotFoundException e) {
-			throw new ReportException(e);
-		} 
+		AsposeUtil.AsposeLicence(null);
 	}
 	
 	public AsposeWordEngine(Document document) {
@@ -117,28 +108,13 @@ public class AsposeWordEngine implements WordEngine {
 		}
 	}
 	
-	/**
-	 * asposeWord注册
-	 * @param is
-	 */
-	private void showLicense(InputStream is) {
-		try {
-			License aposeLic = new License();
-			aposeLic.setLicense(is);
-		} catch (Exception e) {
-			System.err.println("你没有合法的aspose使用权限，你需要为引擎提供aspose的使用证书!!!!");
-			System.err.println("当前证书的路径是： " + this.license);
-			log.warn("你没有合法的aspose使用权限，你需要为引擎提供aspose的使用证书");
-		}
-	}
-
 	public String getLicense() {
 		return this.license;
 	}
 
 	public void setLicense(String license) throws FileNotFoundException {
 		this.license = license;
-		showLicense(new FileInputStream(new File(license)));
+		AsposeUtil.AsposeLicence(license);
 	}
 
 	public Document getDocument() {
@@ -205,6 +181,13 @@ public class AsposeWordEngine implements WordEngine {
 	@Override
 	public void setTemplate(WordTemplate template) {
 		this.template = template;
+	}
+
+	@Override
+	public void clear() {
+		this.template=null;
+		this.document=null;
+		this.context = null;
 	}
 	
 	

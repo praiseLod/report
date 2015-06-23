@@ -40,7 +40,7 @@ public interface TextEngine extends ReportEngine<TextTemplate, VelocityContext> 
 	 */
 	String merge(TextTemplate template,VelocityContext context);
 	/**
-	 * 将最后生成的文档转换为二进行流
+	 * 将最后生成文档保存为二进行流
 	 * @return InputStream
 	 */
 	InputStream saveTo();

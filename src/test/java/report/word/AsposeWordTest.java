@@ -19,7 +19,8 @@ import com.fdauto.report.word.aspose.mergehandler.InsertDocumentAtMailMergeBlobH
 public class AsposeWordTest {
 	
 	public static void main(String[] args) throws Exception {
-		normal();
+		//normal();
+		htmlDoc();
 		//insertDocument();
 	}
 	
@@ -48,7 +49,7 @@ public class AsposeWordTest {
 		context.putMailMergeHandler(new InsertDocumentAtMailMergeBlobHandler());
 		
 		//定义模板
-		engine.setTemplate("template/收入证明.doc");
+		engine.setTemplate("template/Aspose.htm");
 		//整合数据
 		engine.merge(context);
 		
@@ -67,5 +68,11 @@ public class AsposeWordTest {
 			engine.save(new FileOutputStream("e://nest.doc"), ReportType.DOC);
 		}
 	
+		private static void htmlDoc() throws FileNotFoundException{
+			WordEngine engine = new AsposeWordEngine();
+			engine.setTemplate("template/Aspose.htm");
+			FileOutputStream stream = new FileOutputStream("e://1.doc");
+			engine.save(stream,ReportType.DOC);
+		}
 	
 }

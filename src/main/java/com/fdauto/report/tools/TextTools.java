@@ -29,24 +29,31 @@ public class TextTools {
 	
 	public static String merge(String path,VelocityContext context){
 		engine.setTemplate(path);
-		return engine.merge(context);
+		String result =engine.merge(context);
+		engine.clear();
+		return result;
 	}
 	
 	public static InputStream saveTo(String path,VelocityContext context){
 		engine.setTemplate(path);
 		engine.setContext(context);
-		return engine.saveTo();
+		InputStream stream = engine.saveTo();
+		engine.clear();
+		return stream;
 	}
 	
 	public static void save(OutputStream stream,String path,VelocityContext context){
 		engine.setTemplate(path);
 		engine.setContext(context);
 		engine.save(stream);
+		engine.clear();
 	}
 	public static String merge(InputStream stream,VelocityContext context){
 		engine.setTemplate(stream);
 		engine.setContext(context);
-		return engine.merge();
+		String result =engine.merge();
+		engine.clear();
+		return result;
 	};
 	
 	
